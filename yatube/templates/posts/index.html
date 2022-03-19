@@ -20,16 +20,15 @@
                </li>
             </ul>
               <p>{{ post.text }}</p>
-                <p>
+                <li>
                   <a href="{% url 'posts:post_detail' post.id %}">
                   подробная информация </a>
-              </p>&nbsp;&nbsp;&nbsp;&nbsp;
+                </li>
               {% if post.group %}
-                <span><a href="{% url 'posts:group_list' post.group.slug %}">
-                       все записи группы {{ post.group.title }}</a></span>&nbsp;&nbsp;
-              {% endif %}
-              {% if user == post.author %}
-                <a href="{% url 'posts:post_edit' post.id %}"> редактировать пост</a>
+                <li>
+                <a href="{% url 'posts:group_list' post.group.slug %}">
+                       все записи группы {{ post.group.title }}</a>
+                </li>&nbsp;
               {% endif %}
               {% if not forloop.last %}<hr>{% endif %}
             {% endfor %}
