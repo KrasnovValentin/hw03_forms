@@ -8,7 +8,7 @@
       <div class='container py-5'>
         <article>
           <h2>Все посты пользователя {{ author.get_full_name }}</h2>
-            {% for post in page_obj %}
+            {% for post in page %}
                 <ul>
                 <li>
                   <a href="{% url 'posts:profile' post.author.username %}">
@@ -20,15 +20,15 @@
               </ul>
               <p>{{ post.text }}</p>
               {% if post.group %}
-                <a href="{% url 'posts:group_list' post.group.slug %}">
-                  все записи группы {{ post.group.title }}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <li>
+                  <a href="{% url 'posts:group_list' post.group.slug %}">
+                    все записи группы {{ post.group.title }}</a>
+                </li>
               {% endif %}
-                <p class="tab"> <a href="{% url 'posts:post_detail' post.id %}">
-                                подробная информация</a>  &nbsp;&nbsp;&nbsp;&nbsp;
-              </p>
-                {% if user == post.author %}
-                  <a href="{% url 'posts:post_edit' post.id %}"> редактировать пост</a>
-                {% endif %}
+                <li>
+                  <a href="{% url 'posts:post_detail' post.id %}">
+                                подробная информация</a>
+                </li>
               {% if not forloop.last %}<hr>{% endif %}
             {% endfor %}
             {% include 'posts/includes/paginator.html' %}

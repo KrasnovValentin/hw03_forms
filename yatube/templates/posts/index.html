@@ -10,7 +10,7 @@
     <div class='container py-5'>
         <article>
           <h2>Последние обновления на сайте</h2>
-            {% for post in page_obj %}
+            {% for post in page %}
               <ul>
               <li>
                 <a href="{% url 'posts:profile' post.author.username %}">Автор: {{ post.author.get_full_name }}</a>

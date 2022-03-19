@@ -11,7 +11,7 @@
           <p>
             <h4>{{ group }}</h4>
           </p>
-          {% for post in page_obj %}
+          {% for post in page %}
             <ul>
               <li>
                 Автор: <a href="{% url 'posts:profile' post.author.username %}">

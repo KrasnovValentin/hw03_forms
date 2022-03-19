@@ -12,10 +12,10 @@ def index(request: HttpRequest) -> HttpResponse:
     posts: str = Post.objects.all()
     paginator = Paginator(posts, 10)
     page_number: int = request.GET.get('page')
-    page_obj: int = paginator.get_page(page_number)
+    page: int = paginator.get_page(page_number)
     context: dict = {
         'posts': posts,
-        'page_obj': page_obj,
+        'page': page,
         'title': 'Последние обновления на сайте',
     }
     return render(request, 'posts/index.html', context)
@@ -28,11 +28,11 @@ def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
     posts: str = Post.objects.filter(group=group)
     paginator = Paginator(posts, 10)
     page_number: int = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page: int = paginator.get_page(page_number)
     context: dict = {
         'group': group,
         'posts': posts,
-        'page_obj': page_obj,
+        'page': page,
         'title': f'Записи сообщества {slug}',
     }
     return render(request, 'posts/group_list.html', context)
@@ -43,15 +43,15 @@ def profile(request: HttpRequest, username) -> HttpResponse:
     """Модуль отвечающий за личную страницу"""
     author = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=author)
-    posts_count = author.posts.count()
+    posts_count: int = author.posts.count()
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page = paginator.get_page(page_number)
 
     context = {
         'posts_count': posts_count,
         'author': author,
-        'page_obj': page_obj,
+        'page': page,
     }
     return render(request, 'posts/profile.html', context)
 
