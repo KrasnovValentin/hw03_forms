@@ -61,8 +61,7 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Модуль отвечающий за просмотр отдельного поста"""
 
     post = get_object_or_404(
-        Post
-            .objects
+        Post.objects
             .select_related('author')
             .select_related('group'), id=post_id)
     return render(request, 'posts/post_detail.html', {'post': post})
