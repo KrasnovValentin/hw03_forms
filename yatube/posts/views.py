@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from .models import Post, Group, User
+from posts.forms import PostForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django import forms
 import datetime
 
 
@@ -62,16 +62,10 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
 
     post = get_object_or_404(
         Post
-        .objects
-        .select_related('author')
-        .select_related('group'), id=post_id)
+            .objects
+            .select_related('author')
+            .select_related('group'), id=post_id)
     return render(request, 'posts/post_detail.html', {'post': post})
-
-
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = ('text', 'group')
 
 
 @login_required
