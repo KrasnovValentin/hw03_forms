@@ -10,7 +10,7 @@
     <div class='container py-5'>
         <article>
           <h2>Последние обновления на сайте</h2>
-            {% for post in page %}
+            {% for post in page_obj %}
               <ul>
               <li>
                 <a href="{% url 'posts:profile' post.author.username %}">Автор: {{ post.author.get_full_name }}</a>
@@ -20,15 +20,11 @@
                </li>
             </ul>
               <p>{{ post.text }}</p>
-                <li>
-                  <a href="{% url 'posts:post_detail' post.id %}">
-                  подробная информация </a>
-                </li>
               {% if post.group %}
-                <li>
+
                 <a href="{% url 'posts:group_list' post.group.slug %}">
                        все записи группы {{ post.group.title }}</a>
-                </li>&nbsp;
+                &nbsp;
               {% endif %}
               {% if not forloop.last %}<hr>{% endif %}
             {% endfor %}

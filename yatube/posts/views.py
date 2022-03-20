@@ -9,30 +9,29 @@ import datetime
 
 def index(request: HttpRequest) -> HttpResponse:
     """Модуль отвечающий за главную страницу"""
-    posts: str = Post.objects.all()
+    posts: Post = Post.objects.all()
     paginator = Paginator(posts, 10)
-    page_number: int = request.GET.get('page')
-    page: int = paginator.get_page(page_number)
-    context: dict = {
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
         'posts': posts,
-        'page': page,
+        'page_obj': page_obj,
         'title': 'Последние обновления на сайте',
     }
     return render(request, 'posts/index.html', context)
 
 
-@login_required
-def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
+def group_posts(request: HttpRequest, slug) -> HttpResponse:
     """Модуль отвечающий за страницу сообщества"""
     group = get_object_or_404(Group, slug=slug)
-    posts: str = Post.objects.filter(group=group)
+    posts = Post.objects.filter(group=group)
     paginator = Paginator(posts, 10)
-    page_number: int = request.GET.get('page')
-    page: int = paginator.get_page(page_number)
-    context: dict = {
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {
         'group': group,
         'posts': posts,
-        'page': page,
+        'page_obj': page_obj,
         'title': f'Записи сообщества {slug}',
     }
     return render(request, 'posts/group_list.html', context)
@@ -43,21 +42,19 @@ def profile(request: HttpRequest, username) -> HttpResponse:
     """Модуль отвечающий за личную страницу"""
     author = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=author)
-    posts_count: int = author.posts.count()
+    posts_count = author.posts.count()
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-
+    page_obj = paginator.get_page(page_number)
     context = {
         'posts_count': posts_count,
         'author': author,
-        'page': page,
+        'page_obj': page_obj,
     }
     return render(request, 'posts/profile.html', context)
 
 
-@login_required
-def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
+def post_detail(request: HttpRequest, post_id) -> HttpResponse:
     """Модуль отвечающий за просмотр отдельного поста"""
 
     post = get_object_or_404(
@@ -84,9 +81,9 @@ def post_create(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
+def post_edit(request: HttpRequest, post_id) -> HttpResponse:
     """Модуль отвечающий за страницу редактирования текста постов."""
-    post: str = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():

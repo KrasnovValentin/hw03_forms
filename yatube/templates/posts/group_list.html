@@ -11,7 +11,7 @@
           <p>
             <h4>{{ group }}</h4>
           </p>
-          {% for post in page %}
+          {% for post in page_obj %}
             <ul>
               <li>
                 Автор: <a href="{% url 'posts:profile' post.author.username %}">
@@ -25,13 +25,9 @@
               {% if post.group %}
                 <li>
                   <a href="{% url 'posts:group_list' post.group.slug %}">
-                  все записи группы {{ group.title }}</a>
+                  все записи группы </a>
                 </li>
               {% endif %}
-                <li>
-                  <a href="{% url 'posts:post_detail' post.id %}">
-                      подробная информация </a>
-                </li>
               {% if not forloop.last %}<hr>{% endif %}
           {% endfor %}
           {% include 'posts/includes/paginator.html' %}
