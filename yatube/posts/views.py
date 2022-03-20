@@ -33,6 +33,7 @@ def group_posts(request: HttpRequest, slug) -> HttpResponse:
         'posts': posts,
         'page_obj': page_obj,
         'title': f'Записи сообщества {slug}',
+        'gr_descr': group.description
     }
     return render(request, 'posts/group_list.html', context)
 
@@ -80,7 +81,7 @@ def post_create(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def post_edit(request: HttpRequest, post_id) -> HttpResponse:
+def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     """Модуль отвечающий за страницу редактирования текста постов."""
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
@@ -90,7 +91,7 @@ def post_edit(request: HttpRequest, post_id) -> HttpResponse:
             post.group = form.cleaned_data['group']
             post.author = request.user
             post.save()
-            return redirect('posts:profile', request.user)
+            return redirect('posts:post_detail', post_id)
         else:
             context = {
                 'form': form,
