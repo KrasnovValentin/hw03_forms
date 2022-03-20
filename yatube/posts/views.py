@@ -37,7 +37,6 @@ def group_posts(request: HttpRequest, slug) -> HttpResponse:
     return render(request, 'posts/group_list.html', context)
 
 
-@login_required
 def profile(request: HttpRequest, username) -> HttpResponse:
     """Модуль отвечающий за личную страницу"""
     author = get_object_or_404(User, username=username)

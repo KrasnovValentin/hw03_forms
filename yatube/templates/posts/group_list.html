@@ -1,16 +1,11 @@
 {%  extends 'base.html'  %}
 {%  block content  %}
 {% block title %} <title> {{ title }} </title>{% endblock %}
-<html lang="ru">
+{% block header %} <h1>{{ group.title }}</h1>{% endblock %}
 <body>
   <main>
     <div class='container py-5'>
-      <h2>Записи сообщества: {{ group }}</h2>
-        <p>Группа тайных поклонников графа</p>
         <article>
-          <p>
-            <h4>{{ group }}</h4>
-          </p>
           {% for post in page_obj %}
             <ul>
               <li>
