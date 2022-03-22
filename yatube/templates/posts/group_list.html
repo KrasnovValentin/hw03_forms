@@ -1,35 +1,34 @@
 {%  extends 'base.html'  %}
 {%  block content  %}
 {% block title %} <title> {{ title }} </title>{% endblock %}
-{% block header %} <h1>{{ group.title }}</h1>{% endblock %}
-<body>
   <main>
     <div class='container py-5'>
-    <p>{{ gr_descr }}</p>
-        <article>
-          {% for post in page_obj %}
-            <ul>
+      <article>
+        <h1>{{ group.title }}</h1>
+        <h6>{{ gr_descr }}</h6>
+        <h6>Всего постов группы: {{ group.posts.count }}</h6>
+        {% for post in page_obj %}
+          <ul>
+            <li>
+              Автор: <a href="{% url 'posts:profile' post.author.username %}">
+              <b>{{ post.author.get_full_name }}</b></a>
+            </li>
+            <li>
+              Дата публикации: {{ post.pub_date|date:'d M Y' }}
+            </li>
+          </ul>
+            <p>{{ post.text }}</p>
+            {% if post.group %}
               <li>
-                Автор: <a href="{% url 'posts:profile' post.author.username %}">
-                  <b>{{ post.author.get_full_name }}</b></a>
+                <a href="{% url 'posts:group_list' post.group.slug %}">
+                все записи группы </a>
               </li>
-              <li>
-                Дата публикации: {{ post.pub_date|date:'d M Y' }}
-              </li>
-            </ul>
-              <p>{{ post.text }}</p>
-              {% if post.group %}
-                <li>
-                  <a href="{% url 'posts:group_list' post.group.slug %}">
-                  все записи группы </a>
-                </li>
-              {% endif %}
-              {% if not forloop.last %}<hr>{% endif %}
-          {% endfor %}
+            {% endif %}
+            {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
           {% include 'posts/includes/paginator.html' %}
-        </article>
+      </article>
     </div>
   </main>
-</body>
 {% endblock %}
-</html>
+
