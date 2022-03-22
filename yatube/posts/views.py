@@ -80,8 +80,6 @@ def post_create(request: HttpRequest) -> HttpResponse:
     return render(request, 'posts/create_post.html', {'form': form, })
 
 
-
-
 @login_required
 def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     """Модуль отвечающий за страницу редактирования текста постов."""
@@ -108,7 +106,3 @@ def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     post.author = request.user
     post.save()
     return redirect('posts:post_detail', post_id)
-
-
-
-
