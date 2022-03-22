@@ -76,7 +76,7 @@ def post_create(request: HttpRequest) -> HttpResponse:
         post.author = request.user
         post.pub_date = datetime.datetime.now()
         post.save()
-        return redirect('posts:post_detail', post.id)
+        return redirect('posts:profile', post.author)
     return render(request, 'posts/create_post.html', {'form': form, })
 
 
