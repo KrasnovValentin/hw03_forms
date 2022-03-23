@@ -1,13 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
-{% load static %}
-{% include 'includes/header.html' %}
+<head>
+  {% include 'includes/header.html' %}
+</head>
 <body>
   <main>
     {% block content %}
       Контент не подвезли :(
     {% endblock %}
   </main>
+  <footer>
+    {% include 'includes/footer.html' %}
+  </footer>
 </body>
-{% include 'includes/footer.html' %}
 </html>

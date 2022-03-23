@@ -1,19 +1,19 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpRequest
-from .models import Post, Group, User
-from posts.forms import PostForm
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-from django.conf import settings
 import datetime
 
-perpage = settings.PERPAGE
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpRequest
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
+from posts.models import Post, Group, User
+from posts.forms import PostForm
+from yatube.settings import PERPAGE
 
 
 def index(request: HttpRequest) -> HttpResponse:
     """Модуль отвечающий за главную страницу."""
     posts: Post = Post.objects.all()
-    paginator = Paginator(posts, perpage)
+    paginator = Paginator(posts, PERPAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -28,7 +28,7 @@ def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
     """Модуль отвечающий за страницу сообщества."""
     group = get_object_or_404(Group, slug=slug)
     posts = Post.objects.filter(group=group)
-    paginator = Paginator(posts, perpage)
+    paginator = Paginator(posts, PERPAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -44,7 +44,7 @@ def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
 def profile(request: HttpRequest, username: str) -> HttpResponse:
     """Модуль отвечающий за личную страницу."""
     author = get_object_or_404(User, username=username)
-    paginator = Paginator(author.posts.all(), perpage)
+    paginator = Paginator(author.posts.all(), PERPAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -56,7 +56,6 @@ def profile(request: HttpRequest, username: str) -> HttpResponse:
 
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Модуль отвечающий за просмотр отдельного поста."""
-
     post = get_object_or_404(
         Post.objects
             .select_related('author')
@@ -84,22 +83,17 @@ def post_create(request: HttpRequest) -> HttpResponse:
 def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     """Модуль отвечающий за страницу редактирования текста постов."""
     post = get_object_or_404(Post, id=post_id)
+    form = PostForm(instance=post)
+    context = {
+        'form': form,
+        'is_edit': True,
+    }
+    if request.user != post.author:
+        return redirect('posts:post_detail', post_id)
     if request.method != 'POST':
-        if request.user != post.author:
-            return redirect('posts:post_detail', post_id)
-        form = PostForm(instance=post)
-        context = {
-            'form': form,
-            'is_edit': True,
-        }
         return render(request, 'posts/create_post.html', context)
-
     form = PostForm(request.POST, instance=post)
     if not form.is_valid():
-        context = {
-            'form': form,
-            'is_edit': True,
-        }
         return render(request, 'posts/create_post.html', context)
     post.text = form.cleaned_data['text']
     post.group = form.cleaned_data['group']

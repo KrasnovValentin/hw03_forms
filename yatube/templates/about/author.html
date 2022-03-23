@@ -1,20 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <head>
-    {% block title %}<title>Об авторе проекта</title>{% endblock %}
-  </head>
-  <body>
-    <header>
-    </header>
-
-    <div class='container py-5'>
-        <h1>Коннор Маклауд.</h1>
-
-      <p>
-        <img src="{% static 'img/connor.jpg' %}" width="200" height="180"
-             align="left" vspace="5" hspace="5">
-
+<head>
+  {% block title %}<title>Об авторе проекта</title>{% endblock %}
+</head>
+<body>
+  <div class='container py-5'>
+    <h1>Коннор Маклауд.</h1>
+    <p>
+      <img src="{% static 'img/connor.jpg' %}" width="200" height="180"
+       align="left" vspace="5" hspace="5">
         Родился в Шотландии в 1518 году в Гленфиннан — деревне клана Маклаудов[2].
         В 1536 году впервые убит в междоусобной битве Курганом  (англ.)рус..
         Воскреснув, Коннор был изгнан из клана как колдун. Он бродил по Шотландии на протяжении нескольких лет,
@@ -33,13 +28,8 @@
         католиков. По этой или другой причине в 1605 г. он плывет в составе команды парусника в Северную Африку,
         где происходит его знакомство с Сунда Кастагиром. Далее живёт в Африке, вплоть до возвращения на родину,
         в Шотландию.
-      </p>
-
-      </div>
-    </main>
-    <footer class="border-top text-center py-3">
-
-    </footer>
-  </body>
+    </p>
+  </div>
+</body>
 {% endblock %}
-</html>
+

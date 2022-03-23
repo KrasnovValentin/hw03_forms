@@ -5,6 +5,6 @@ register = template.Library()
 
 
 @register.filter
-def addclass(field: Field, css: any) -> Field:
+def addclass(field: Field, css: any) -> str:
     """ Модуль фильтра для улучшенной вёрстки HTML-страниц."""
     return field.as_widget(attrs={'class': css})
