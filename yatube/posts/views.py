@@ -7,13 +7,15 @@ from django.core.paginator import Paginator
 
 from posts.models import Post, Group, User
 from posts.forms import PostForm
-from yatube.settings import PERPAGE
+from django.conf import settings
+
+per_page = settings.PERPAGE
 
 
 def index(request: HttpRequest) -> HttpResponse:
     """Модуль отвечающий за главную страницу."""
     posts: Post = Post.objects.all()
-    paginator = Paginator(posts, PERPAGE)
+    paginator = Paginator(posts, per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -28,7 +30,7 @@ def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
     """Модуль отвечающий за страницу сообщества."""
     group = get_object_or_404(Group, slug=slug)
     posts = Post.objects.filter(group=group)
-    paginator = Paginator(posts, PERPAGE)
+    paginator = Paginator(posts, per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
@@ -44,7 +46,7 @@ def group_posts(request: HttpRequest, slug: str) -> HttpResponse:
 def profile(request: HttpRequest, username: str) -> HttpResponse:
     """Модуль отвечающий за личную страницу."""
     author = get_object_or_404(User, username=username)
-    paginator = Paginator(author.posts.all(), PERPAGE)
+    paginator = Paginator(author.posts.all(), per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
