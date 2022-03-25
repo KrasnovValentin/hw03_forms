@@ -2,10 +2,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  {% include 'includes/header.html' %}
+  {% include 'includes/head.html' %}
+  <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-  {% block title %} {% endblock %}
+  <header>
+    {% include 'includes/header.html' %}
+  </header>
   <main>
     {% block content %}
       Контент не подвезли :(
